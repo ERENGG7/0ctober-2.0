@@ -1,0 +1,235 @@
+#include <iostream>
+#include<thread>
+#include<chrono>
+#include<conio.h>
+#include<windows.h>
+#include<string>
+ 
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define PURPLE "\033[35m"
+#define CYAN "\033[36m"
+#define WHITE "\033[37m"
+ 
+#define BLACKB "\033[40m"
+#define REDB "\033[41m"
+#define GREENB "\033[42m"
+#define YELLOWB  "\033[43m"
+#define BLUEB  "\033[44m"
+#define PURPLEB "\033[45m"
+#define CYANB "\033[46m"
+#define WHITEB "\033[47m"
+using namespace std;
+ 
+bool isRunning = true;
+ 
+static string randomColor() {
+	string colors[] = { RED,GREEN,YELLOW,BLUE,PURPLE,CYAN };
+	int index = rand() % 6;
+	return colors[index];
+ 
+}
+static string randomBackgroundColor() {
+	string colors[] = { REDB,GREENB,YELLOWB,PURPLEB,CYANB };
+	int index = rand() % 5;
+	return colors[index];
+ 
+}
+void drawLowerPart(int count) {
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < count * 2 - 1; j++) {
+			cout << WHITEB << ' ' << RESET;
+		}
+		cout << endl;
+	}
+}
+void drawTree() {
+	int count = 10;
+	string spaces(count - 1, ' ');
+	cout << BLUEB << spaces;
+	cout << YELLOWB << ' ' << RESET;
+	cout << BLUEB << spaces << RESET << endl;
+	for (int i = 0; i < count; i++) {
+		for (int j = 0; j < count - i - 1; j++) {
+			int index = rand() % 10;
+			if (index < 9) {
+				cout << BLUEB << ' ' << RESET;
+			}
+			else {
+				cout << BLUEB << WHITE << "*" << RESET;
+			}
+ 
+		}
+		for (int k = 0; k < 2 * i + 1; k++) {
+			int index = rand() % 10;
+			if (index < 8) {
+				cout << GREENB << ' ' << RESET;
+			}
+			else {
+				cout << randomBackgroundColor() << ' ' << RESET;
+			}
+		}
+		for (int j = 0; j < count - i - 1; j++) {
+			int index = rand() % 10;
+			if (index < 9) {
+				cout << BLUEB << ' ' << RESET;
+			}
+			else {
+				cout << BLUEB << WHITE << "*" << RESET;
+			}
+ 
+		}
+		cout << endl;
+	}
+	for (int i = 0; i < count / 2; i++) {
+		for (int j = 0; j < count - 2; j++) {
+			int index = rand() % 10;
+			if (index < 9) {
+				cout << BLUEB << ' ' << RESET;
+			}
+			else {
+				cout << BLUEB << WHITE << "*" << RESET;
+			}
+		}
+		for (int k = 0; k < 3; k++) {
+ 
+			cout << CYANB << ' ' << RESET;
+		}
+		for (int j = 0; j < count - 2; j++) {
+			int index = rand() % 10;
+			if (index < 9) {
+				cout << BLUEB << ' ' << RESET;
+			}
+			else {
+				cout << BLUEB << WHITE << "*" << RESET;
+			}
+		}
+		cout << endl;
+	}
+	drawLowerPart(count);
+}
+void charachter(int offset) {
+	string space(offset, ' '); 
+ 
+	cout << RED;
+	cout << space << "  _[]_   \n";
+	cout << space << "   []    \n";
+	cout << space << " |[00]|  \n";
+	cout << space << "   []    \n";
+	cout << space << "   ||    \n";
+	cout << RESET;
+}
+void guard(int offset) {
+	string space(offset, ' ');
+	cout << RED;
+	cout << space << "   _[]_    \n";
+	cout << space << "    []     \n";
+	cout << space << " |[0000]|  \n";
+	cout << space << "   [__]    \n";
+	cout << space << "   |  |    \n";
+	cout << RESET;
+}
+void background() {
+	cout << BLUE << "----+------------------+----" << "----+------------------+----\n";
+	cout << "----+------BUSHIDO-----+----"<< "----+------BUSHIDO-----+----\n";
+	cout << "----+------------------+----" << "----+------------------+----\n" << RESET;;
+}
+void printwithshedule(string txt, int delay = 80) {
+	for (char c : txt) {
+		cout << c;
+		this_thread::sleep_for(chrono::milliseconds(delay));
+	}
+	cout << endl;
+}
+void printInfo() {
+	cout << GREEN << "ENTER 1 FOR CHRISTMAS TREE.\n" 
+		<< "PRES 2 FOR DISCO.\n"
+		<<"PRESS 3 FOR MUSIC."<< RESET << endl;
+}
+int main() {
+	char c;
+	int command;
+ 
+	while (true) {
+		printInfo();
+		cout << GREEN << "ENTER YOUR CHOISE: " << RESET;
+		cin >> command;
+		if (command == 1) {
+			isRunning = true;
+			while (isRunning) {
+				system("cls");
+				drawTree();
+				this_thread::sleep_for(chrono::milliseconds(100));
+				if (_kbhit()) {
+					c = _getch();
+					if (c == 'q' || c == 'Q') {
+						isRunning = false;
+						system("cls");
+					}
+				}
+			}
+		}
+		else if (command == 2) {
+			isRunning = true;
+			while (isRunning) {
+				int wight = 50;
+				for (int i = 0; i < wight; i++) {
+					system("cls");
+					background();
+					charachter(i);
+					guard(wight - i);
+					background();
+					Sleep(50);
+				}
+				for (int i = wight - 1; i >= 0; i--) {
+					system("cls");
+					background();
+					charachter(i);
+					guard(wight - i);
+					background();
+					Sleep(50);
+				}
+				if (_kbhit()) {
+					c = _getch();
+					if (c == 'q' || c == 'Q') {
+						isRunning = false;
+						system("cls");
+					}
+				}
+			}
+		}
+		else if (command == 3) {
+			isRunning = true;
+			system("cls");
+			while (isRunning) {
+				printwithshedule("Welcome to your life");
+				this_thread::sleep_for(chrono::milliseconds(300));
+				printwithshedule("There's no turning back");
+				this_thread::sleep_for(chrono::milliseconds(300));
+				printwithshedule("Even while we sleep");
+				this_thread::sleep_for(chrono::milliseconds(300));
+				printwithshedule("We will find you");
+				this_thread::sleep_for(chrono::milliseconds(600));
+				printwithshedule("Acting on your best behaviour");
+				this_thread::sleep_for(chrono::milliseconds(300));
+				printwithshedule("Turn your back on Mother Nature");
+				this_thread::sleep_for(chrono::milliseconds(300));
+				printwithshedule("Everybody wants to rule the world");
+				this_thread::sleep_for(chrono::seconds(2));
+				system("cls");
+				if (_kbhit()) {
+					c = _getch();
+					if (c == 'q' || c == 'Q') {
+						isRunning = false;
+						system("cls");
+					}
+				}
+			}
+ 
+		}
+	}	
+	return 0;
+}
