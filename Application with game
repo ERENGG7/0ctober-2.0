@@ -1,0 +1,294 @@
+#include <iostream>
+#include <cstdlib>//for random/rand
+#include <ctime>
+#include <windows.h>
+ 
+//defined colors - blue,red,green,yellow
+#define BLUE "\033[34m"
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+ 
+using namespace std;
+//func for random color generator
+string color() {
+	string colors[] = { RED,BLUE,YELLOW,GREEN };
+	int index = rand() % 4;
+	return colors[index];
+}
+void pause_for_enter() {
+	cout << "\n" << YELLOW << "PRESS ENTER TO CONTINUE" << RESET;
+	cin.ignore();
+	cin.get();
+}
+//func for firework
+void new_year_firework() {
+	int rows = 10;
+	for (int t = 0; t < 10; t++) {
+		system("cls");
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < rows - i - 1; j++) {
+				cout << ".";
+			}
+			for (int k = 0; k < 2 * i + 1; k++) {
+				cout << color() << "*" << RESET;
+			}
+			cout << "\n";
+		}
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < rows / 2; j++) {
+				cout << ".";
+			}
+			for (int k = 0; k < 9; k++) {
+				cout << color() << "*" << RESET;
+			}
+			cout << "\n";
+		}
+		for (int i = 0; i < rows / 2; i++) {
+			for (int j = 0; j < rows - 2; j++) {
+				cout << ".";
+			}
+			for (int k = 0; k < 3; k++) {
+				cout << YELLOW << "|" << RESET;
+			}
+			cout << "\n";
+		}
+ 
+		for (int i = 0; i < rows - 4; i++) {
+			cout << " ";
+		}
+		cout << color() << "FIREWORK" << RESET << endl;
+		Sleep(400);
+	}
+ 
+}
+//func for hameleon animation
+void moving_hameleons() {
+	int wight = 50;
+	string txt = "_____[0|0|0|0]@";
+	string txt3 = "@[0|0|0|0]____";
+	for (int i = 0; i < wight; i++) {
+		system("cls");
+		for (int j = 0; j < wight / 2; j++) {
+			cout << " ";
+		}
+		cout << "HAMELEON" << endl;
+		for (int j = 0; j < i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt << RESET << endl;
+		for (int j = 0; j < wight - i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt3 << RESET << endl;
+		for (int j = 0; j < i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt << RESET << endl;
+		for (int j = 0; j < i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt << RESET << endl;
+		for (int j = 0; j < wight - i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt3 << RESET << endl;
+		for (int j = 0; j < i; j++) {
+			cout << " ";
+		}
+		cout << color() << txt << RESET << endl;
+		for (int j = 0; j < wight / 2; j++) {
+			cout << " ";
+		}
+		cout << "INTERESTING" << endl;
+		Sleep(300);
+	}
+}
+//func for christmas three
+void draw_three() {
+	int wys = 10;
+	for (int t = 0; t < 10; t++) {
+		system("cls");
+		for (int i = 0; i < wys; i++) {
+			for (int j = 0; j < wys - i - 1; j++) {
+				cout << " ";
+			}
+			for (int k = 0; k < 2 * i + 1; k++) {
+				int choise = rand() % 10;
+				if (choise < 8) {
+					cout << "*";
+				}
+				else {
+					cout << color() << "." << RESET;
+				}
+			}
+			cout << "\n";
+		}
+ 
+		for (int i = 0; i < wys / 2; i++) {
+			for (int j = 0; j < wys - 2; j++) {
+				cout << " ";
+			}
+			for (int k = 0; k < 3; k++) {
+				cout << "|";
+			}
+			cout << "\n";
+		}
+		for (int i = 0; i < wys - 8; i++) {
+			cout << " ";
+		}
+		cout << GREEN << "CHRISTMAS THREE" << RESET << endl;;
+		Sleep(400);
+	}
+}
+//func for board game 
+void displayBoard(char board[3][3]) {
+	cout << YELLOW << board[0][0] << " |" << board[0][1] << "  |" << board[0][2] << endl;
+	cout << "--+---+--\n";
+	cout << board[1][0] << " |" << board[1][1] << "  |" << board[1][2] << endl;
+	cout << "--+---+--\n";
+	cout << board[2][0] << " |" << board[2][1] << "  |" << board[2][2] << RESET << endl;
+}
+ 
+void playAt(char board[3][3], int input, char symbol) {
+	switch (input) {
+	case 1: board[0][0] = symbol; break;
+	case 2: board[0][1] = symbol; break;
+	case 3: board[0][2] = symbol; break;
+	case 4: board[1][0] = symbol; break;
+	case 5: board[1][1] = symbol; break;
+	case 6: board[1][2] = symbol; break;
+	case 7: board[2][0] = symbol; break;
+	case 8: board[2][1] = symbol; break;
+	case 9: board[2][2] = symbol; break;
+	}
+}
+ 
+bool isEmpty(char board[3][3], int input) {
+	int row = (input - 1) / 3;
+	int col = (input - 1) % 3;
+	return board[row][col] == ' ';
+}
+//boolian for whinner -row,col
+bool checkWin(char board[3][3], char symbol) {
+	for (int i = 0; i < 3; i++) {
+		if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||  // ROW
+			(board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {  // COL
+			return true;
+		}
+	}
+	if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
+		(board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
+		return true;
+	}
+	return false;
+}
+bool isBoardFull(char board[3][3]) {
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (board[i][j] == ' ') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+ 
+ 
+int main() {
+	srand(time(0));
+	int choise;
+	cout << GREEN << "ANIMATIONS\nPRESS 1 FOR HAMELEON\n"
+		<< "PRESS 2 FOR FIREKRACKER\n"
+		<< "PRESS 3 FOR CHRISTMAS THREE\n"
+		<< "PRESS 4 FOR BOARD GAME\n"<<"PRESS 10 TO SEE ALL ANIMATIONS\n" << RESET;
+	cout << GREEN << "ENTER YOUR CHOISE:" << RESET;
+	cin >> choise;
+	while (true) {
+ 
+ 
+		if (choise == 1) {
+			while (true) {
+				moving_hameleons();
+				break;
+			}
+		}
+		else if (choise == 2) {
+			while (true) {
+				new_year_firework();
+				break;
+			}
+		}
+		else if (choise == 3) {
+			while (true) {
+				draw_three();
+				break;
+			}
+		}
+		else if (choise == 4) {
+			char board[3][3] = {
+						{' ', ' ', ' '},
+						{' ', ' ', ' '},
+						{' ', ' ', ' '}
+			};
+			int aiMove;
+			int playerChoice;
+			while (true) {
+				while (true) {
+					displayBoard(board);
+					cout << GREEN << "Where to play (1-9): " << RESET;
+					cin >> playerChoice;
+					if (playerChoice > 0 && playerChoice < 10 && isEmpty(board, playerChoice)) {
+						playAt(board, playerChoice, 'X');
+						break;
+					}
+					else {
+						cout << RED << "Invalid choice or position taken. Try again.\n" << RESET;
+					}
+				}
+				if (checkWin(board, 'X')) {
+					displayBoard(board);
+					cout << YELLOW << "\n?? You are winner! ??\n" << RESET;
+					break;
+				}
+ 
+				if (isBoardFull(board)) {
+					displayBoard(board);
+					cout << GREEN << "\n?? Equality!\n" << RESET;
+					break;
+				}
+				while (true) {
+					aiMove = 1 + (rand() % 9);
+					if (isEmpty(board, aiMove)) {
+						playAt(board, aiMove, 'O');
+						break;
+					}
+				}
+ 
+			}
+		}
+		else if (choise == 10) {
+ 
+ 
+			new_year_firework();
+			pause_for_enter(); // чака ENTER
+ 
+			// Втора анимация
+			draw_three();
+			pause_for_enter(); // чака ENTER
+ 
+			moving_hameleons();
+			pause_for_enter();
+			cout << GREEN << "\nPRESS ENTER TO ESC.\n" << RESET;
+		}
+		else {
+			cout << RED << "INVALID CHOISE::" << RESET;
+			cout << GREEN << "ENTER YOUR CHOISE:" << RESET;
+			cin >> choise;
+		}
+	}
+ 
+	return 0;
+}
+ 
